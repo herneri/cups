@@ -45,6 +45,16 @@ func print_note(note_name string) bool {
 	return true
 }
 
+func delete_note(note_name string) bool {
+	var err error = os.Remove(CN_DIR + note_name)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "cn: Failed to remove note\n")
+		return false
+	}
+
+	return true
+}
+
 func main() {
 	check_dir_exists()
 	// TODO: Write CLI argument handling
