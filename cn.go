@@ -45,6 +45,23 @@ func print_note(note_name string) bool {
 	return true
 }
 
+func write_note(note_name string) {
+	var text string
+	note_file, err := os.OpenFile(CN_DIR + note_name, os.O_APPEND | os.O_CREATE | os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "cn: Failed to open file for note writing\n")
+		return
+	}
+
+	fmt.Scan(&text)
+	for text != ">X" {
+		note_file.WriteString(text + "\n")
+		fmt.Scan(&text)
+	}
+
+	return
+}
+
 func delete_note(note_name string) bool {
 	var err error = os.Remove(CN_DIR + note_name)
 	if err != nil {
