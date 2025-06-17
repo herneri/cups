@@ -5,7 +5,7 @@ package main
 
 	This file is part of cups.
 
-	cups is free software: you can redistribute it and/or modify it under the terms of the GNU General 
+	cups is free software: you can redistribute it and/or modify it under the terms of the GNU General
 	Public License as published by the Free Software Foundation, either version 3 of the License,
 	or (at your option) any later version.
 
@@ -22,10 +22,20 @@ import (
 	"os"
 )
 
-var CN_DIR string = os.Getenv("HOME") + "/.local/share/cups/"
+var CN_DIR string = os.Getenv("HOME") + "/.local/share/cups/cn/"
+
+func check_dir_exists() {
+	_, err := os.ReadDir(CN_DIR)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "cn: Directory not found, creating new one\n")
+		os.MkdirAll(CN_DIR, os.ModePerm)
+	}
+
+	return
+}
 
 func print_note(note_name string) bool {
-	note_text, err := os.ReadFile(note_name)
+	note_text, err := os.ReadFile(CN_DIR + note_name)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "cn: Failed to read file\n")
 		return false
@@ -36,5 +46,6 @@ func print_note(note_name string) bool {
 }
 
 func main() {
+	check_dir_exists()
 	// TODO: Write CLI argument handling
 }
