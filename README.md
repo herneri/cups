@@ -11,10 +11,10 @@ Refrain from using cups with sensitive data.
 
 ## Utilities
 
-todo: An indexed list of tasks
-wq: A priority queue of assignments
-sch: Weekly schedule of events
-cn: Note manager
+* todo: An indexed list of tasks
+* wq: A priority queue of assignments
+* sch: Weekly schedule of events
+* cn: Note manager
 
 ## Utility Usage
 
