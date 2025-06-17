@@ -42,8 +42,10 @@ func list_notes() {
 	}
 
 	for i := 0; i < len(entries); i++ {
-		fmt.Println("* " + entries[i].Name())
-		fmt.Println("------")
+		if entries[i].IsDir() == false {
+			fmt.Println("* " + entries[i].Name())
+			fmt.Println("------")
+		}
 	}
 
 	return
