@@ -34,6 +34,21 @@ func check_dir_exists() {
 	return
 }
 
+func list_notes() {
+	entries, err := os.ReadDir(CN_DIR)
+	if err != nil {
+		check_dir_exists()
+		return
+	}
+
+	for i := 0; i < len(entries); i++ {
+		fmt.Println("* " + entries[i].Name())
+		fmt.Println("------")
+	}
+
+	return
+}
+
 func print_note(note_name string) bool {
 	note_text, err := os.ReadFile(CN_DIR + note_name)
 	if err != nil {
