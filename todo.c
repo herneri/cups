@@ -65,6 +65,25 @@ struct todo_list *todo_load_list(char *list_name) {
 	return loaded_data;
 }
 
+void todo_update_value(struct todo_list **list, char *list_name, int index, char *value) {
+	if (*list == NULL) {
+		*list = todo_load_list(list_name);
+
+		if (*list == NULL) {
+			fprintf(stderr, "todo: Failed to load list\n");
+			return;
+		}
+	}
+
+	if (index < 0 || index > (*list)->length - 1) {
+		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
+		return;
+	}
+
+	(*list)->list[index] = value;
+	return;
+}
+
 void todo_print_list(char *list_name, struct todo_list *todo_list) {
 	if (todo_list == NULL) {
 		todo_list = todo_load_list(list_name);

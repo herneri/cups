@@ -29,6 +29,9 @@ struct todo_list {
 /* Reads a todo list from a text file into a heap-allocated array with realloc. */
 struct todo_list *todo_load_list(char *string);
 
+/* Change the text of a list item at the given index. */
+void todo_update_value(struct todo_list **list, char *list_name, int index, char *value);
+
 /* Print a loaded todo list. */
 void todo_print_list(char *list_name, struct todo_list *todo_list);
 
