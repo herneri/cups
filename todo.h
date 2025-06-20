@@ -29,4 +29,7 @@ struct todo_list {
 /* Reads a todo list from a text file into a heap-allocated array with realloc. */
 struct todo_list *todo_load_list(char *string);
 
+/* Print a loaded todo list. */
+void todo_print_list(char *list_name, struct todo_list *todo_list);
+
 #endif /* CUPS_TODO_H */

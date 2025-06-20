@@ -64,3 +64,20 @@ struct todo_list *todo_load_list(char *list_name) {
 	fclose(entry_file);
 	return loaded_data;
 }
+
+void todo_print_list(char *list_name, struct todo_list *todo_list) {
+	if (todo_list == NULL) {
+		todo_list = todo_load_list(list_name);
+
+		if (todo_list == NULL) {
+			fprintf(stderr, "todo: Failed to load list\n");
+			return;
+		}
+	}
+
+	for (int i = 0; i < todo_list->length; i++) {
+		printf("%d: %s", i, todo_list->list[i]);
+	}
+
+	return;
+}
