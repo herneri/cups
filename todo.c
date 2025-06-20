@@ -18,35 +18,49 @@
 #include "todo.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int todo_write_list(char *list_name) {
-	FILE *entry_file = fopen(list_name, "w");
-
-	if (entry_file == NULL) {
-		return 1;
-	}
-
-	for (int i = 0; i < 2; i++) {
-		// TODO: Write from todo linked list
-	}
-
-	fclose(entry_file);
-	return 0;
-}
-
-int todo_read_list(char *list_name) {
+struct todo_list *todo_load_list(char *list_name) {
 	FILE *entry_file = fopen(list_name, "r");
-	char buffer[255];
+	struct todo_list *loaded_data = NULL;
+	char *buffer = NULL;
+	size_t buffer_size = 255;
 
 	if (entry_file == NULL) {
-		return 1;
+		return NULL;
 	}
 
-	while (fgets(buffer, 255, entry_file)) {
-		// TODO: Add to todo linked list
+	loaded_data = malloc(sizeof(struct todo_list));
+	if (loaded_data == NULL) {
+		return NULL;
+	}
+
+	loaded_data->list = malloc(sizeof(char *));
+	if (loaded_data->list == NULL) {
+		free(loaded_data);
+		fclose(entry_file);
+		return NULL;
+	}
+
+	if (getline(&buffer, &buffer_size, entry_file) == -1) {
+		free(loaded_data->list);
+		free(loaded_data);
+		fclose(entry_file);
+		return NULL;
+	}
+
+	loaded_data->list[0] = strdup(buffer);
+	loaded_data->length++;
+
+	while (getline(&buffer, &buffer_size, entry_file) != -1) {
+		// TODO: Fix memory leak for interactive mode in the event realloc returns NULL by freeing
+		// the previous list and its elements
+		loaded_data->list = realloc(loaded_data->list, (loaded_data->length + 1) * sizeof(char *));
+		loaded_data->list[loaded_data->length] = strdup(buffer);
+		loaded_data->length++;
 	}
 
 	fclose(entry_file);
-	return 0;
+	return loaded_data;
 }

@@ -18,12 +18,15 @@
 #ifndef CUPS_TODO_H
 #define CUPS_TODO_H
 
-/*
-	Todo entry file operations,
-	where the items are delimited
-	by newlines.
-*/
-int todo_write_list(char *list_name);
-int todo_read_list(char *string);
+/* Todo list items are delimited by the newline character. */
+
+/* The elements in the list member must be freed. */
+struct todo_list {
+	char **list;
+	int length;
+};
+
+/* Reads a todo list from a text file into a heap-allocated array with realloc. */
+struct todo_list *todo_load_list(char *string);
 
 #endif /* CUPS_TODO_H */
