@@ -21,8 +21,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct todo_list *todo_load_list(char *list_name) {
-	FILE *entry_file = fopen(list_name, "r");
+struct todo_list *todo_load_list(void) {
+	FILE *entry_file = fopen(TODO_LIST_PATH, "r");
 	struct todo_list *loaded_data = NULL;
 	char *buffer = NULL;
 	size_t buffer_size = 255;
@@ -65,9 +65,9 @@ struct todo_list *todo_load_list(char *list_name) {
 	return loaded_data;
 }
 
-void todo_update_value(struct todo_list **list, char *list_name, int index, char *value) {
+void todo_update_value(struct todo_list **list, int index, char *value) {
 	if (*list == NULL) {
-		*list = todo_load_list(list_name);
+		*list = todo_load_list();
 
 		if (*list == NULL) {
 			fprintf(stderr, "todo: Failed to load list\n");
@@ -84,9 +84,9 @@ void todo_update_value(struct todo_list **list, char *list_name, int index, char
 	return;
 }
 
-void todo_print_list(char *list_name, struct todo_list *todo_list) {
+void todo_print_list(struct todo_list *todo_list) {
 	if (todo_list == NULL) {
-		todo_list = todo_load_list(list_name);
+		todo_list = todo_load_list();
 
 		if (todo_list == NULL) {
 			fprintf(stderr, "todo: Failed to load list\n");

@@ -18,6 +18,11 @@
 #ifndef CUPS_TODO_H
 #define CUPS_TODO_H
 
+#include <stdlib.h>
+#include <string.h>
+
+#define TODO_LIST_PATH strcat(getenv("HOME")"/.local/share/cups/todo.txt")
+
 /* Todo list items are delimited by the newline character. */
 
 /* The elements in the list member must be freed. */
@@ -27,12 +32,12 @@ struct todo_list {
 };
 
 /* Reads a todo list from a text file into a heap-allocated array with realloc. */
-struct todo_list *todo_load_list(char *string);
+struct todo_list *todo_load_list(void);
 
 /* Change the text of a list item at the given index. */
-void todo_update_value(struct todo_list **list, char *list_name, int index, char *value);
+void todo_update_value(struct todo_list **list, int index, char *value);
 
 /* Print a loaded todo list. */
-void todo_print_list(char *list_name, struct todo_list *todo_list);
+void todo_print_list(struct todo_list *todo_list);
 
 #endif /* CUPS_TODO_H */
