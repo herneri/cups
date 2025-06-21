@@ -104,6 +104,28 @@ int todo_index_check(int list_length, int index) {
 	return 0;
 }
 
+int todo_write_list(struct todo_list **list) {
+	FILE *todo_file = NULL;
+	char path[255];
+	sprintf(path, "%s/.local/share/cups/todo.txt", getenv("HOME"));
+
+	if (*list == NULL) {
+		return -1;
+	}
+
+	todo_file = fopen(path, "w");
+	if (todo_file == NULL) {
+		return -2;
+	}
+
+	for (int i = 0; i < (*list)->length; i++) {
+		fputs((*list)->list[i], todo_file);
+	}
+
+	fclose(todo_file);
+	return 0;
+}
+
 int todo_append_value(struct todo_list **list, char *value) {
 	if (todo_check_list(list) == -1) {
 		return -1;
