@@ -89,6 +89,22 @@ int todo_index_check(int list_length, int index) {
 	return 0;
 }
 
+int todo_append_value(struct todo_list **list, char *value) {
+	if (todo_check_list(list) == -1) {
+		return -1;
+	}
+
+	(*list)->list = realloc((*list)->list, sizeof(char *) * (*list)->length);
+	if ((*list)->list == NULL) {
+		fprintf(stderr, "todo: Failed to append to todo list\n");
+		return -1;
+	}
+
+	(*list)->list[(*list)->length] = strdup(value);
+	(*list)->length++;
+	return 0;
+}
+
 void todo_update_value(struct todo_list **list, int index, char *value) {
 	if (todo_check_list(list) == -1) {
 		return;

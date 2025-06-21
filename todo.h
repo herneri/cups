@@ -35,6 +35,9 @@ int todo_check_list(struct todo_list **list);
 /* Check whether the given index is within the list. */
 int todo_index_check(int list_length, int index);
 
+/* Append a new value to the todo list. */
+int todo_append_value(struct todo_list **list, char *value);
+
 /* Change the text of a list item at the given index. */
 void todo_update_value(struct todo_list **list, int index, char *value);
 
