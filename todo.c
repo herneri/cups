@@ -22,7 +22,9 @@
 #include <string.h>
 
 struct todo_list *todo_load_list(void) {
-	FILE *entry_file = fopen(TODO_LIST_PATH, "r");
+	char path[255];
+	sprintf(path, "%s/.local/share/cups/todo.txt", getenv("HOME"));
+	FILE *entry_file = fopen(path, "r");
 	struct todo_list *loaded_data = NULL;
 	char *buffer = NULL;
 	size_t buffer_size = 255;

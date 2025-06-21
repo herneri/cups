@@ -18,11 +18,6 @@
 #ifndef CUPS_TODO_H
 #define CUPS_TODO_H
 
-#include <stdlib.h>
-#include <string.h>
-
-#define TODO_LIST_PATH strcat(getenv("HOME")"/.local/share/cups/todo.txt")
-
 /* Todo list items are delimited by the newline character. */
 
 /* The elements in the list member must be freed. */
