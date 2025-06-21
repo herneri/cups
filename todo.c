@@ -67,14 +67,22 @@ struct todo_list *todo_load_list(void) {
 	return loaded_data;
 }
 
-void todo_update_value(struct todo_list **list, int index, char *value) {
+int todo_check_list(struct todo_list **list) {
 	if (*list == NULL) {
 		*list = todo_load_list();
 
 		if (*list == NULL) {
 			fprintf(stderr, "todo: Failed to load list\n");
-			return;
+			return -1;
 		}
+	}
+
+	return 0;
+}
+
+void todo_update_value(struct todo_list **list, int index, char *value) {
+	if (todo_check_list(list) == -1) {
+		return;
 	}
 
 	if (index < 0 || index > (*list)->length - 1) {
@@ -89,13 +97,8 @@ void todo_update_value(struct todo_list **list, int index, char *value) {
 void todo_delete_value(struct todo_list **list, int index) {
 	char **new_content = NULL;
 
-	if (*list == NULL) {
-		*list = todo_load_list();
-
-		if (*list == NULL) {
-			fprintf(stderr, "todo: Failed to load list\n");
-			return;
-		}
+	if (todo_check_list(list) == -1) {
+		return;
 	}
 
 	if (index < 0 || index > (*list)->length - 1) {
@@ -124,13 +127,8 @@ void todo_delete_value(struct todo_list **list, int index) {
 }
 
 void todo_print_list(struct todo_list *todo_list) {
-	if (todo_list == NULL) {
-		todo_list = todo_load_list();
-
-		if (todo_list == NULL) {
-			fprintf(stderr, "todo: Failed to load list\n");
-			return;
-		}
+	if (todo_check_list(&todo_list) == -1) {
+		return;
 	}
 
 	for (int i = 0; i < todo_list->length; i++) {
