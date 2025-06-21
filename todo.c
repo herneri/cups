@@ -63,6 +63,7 @@ struct todo_list *todo_load_list(void) {
 		loaded_data->length++;
 	}
 
+	free(buffer);
 	fclose(entry_file);
 	return loaded_data;
 }
