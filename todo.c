@@ -80,13 +80,21 @@ int todo_check_list(struct todo_list **list) {
 	return 0;
 }
 
+int todo_index_check(int list_length, int index) {
+	if (index < 0 || index > list_length - 1) {
+		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
+		return -1;
+	}
+
+	return 0;
+}
+
 void todo_update_value(struct todo_list **list, int index, char *value) {
 	if (todo_check_list(list) == -1) {
 		return;
 	}
 
-	if (index < 0 || index > (*list)->length - 1) {
-		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
+	if (todo_index_check((*list)->length, index) == -1) {
 		return;
 	}
 
@@ -101,8 +109,7 @@ void todo_delete_value(struct todo_list **list, int index) {
 		return;
 	}
 
-	if (index < 0 || index > (*list)->length - 1) {
-		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
+	if (todo_index_check((*list)->length, index) == -1) {
 		return;
 	}
 
