@@ -29,6 +29,9 @@ struct todo_list {
 /* Reads a todo list from a text file into a heap-allocated array with realloc. */
 struct todo_list *todo_load_list(void);
 
+/* Frees a todo_list and it's elements. */
+void todo_free_list(struct todo_list **list);
+
 /* See whether the list is loaded. If it isn't, then load it. */
 int todo_check_list(struct todo_list **list);
 

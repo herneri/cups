@@ -67,6 +67,21 @@ struct todo_list *todo_load_list(void) {
 	return loaded_data;
 }
 
+void todo_free_list(struct todo_list **list) {
+	if (*list == NULL) {
+		return;
+	}
+
+	for (int i = 0; i < (*list)->length; i++) {
+		free((*list)->list[i]);
+	}
+
+	free((*list)->list);
+	free(*list);
+	*list = NULL;
+	return;
+}
+
 int todo_check_list(struct todo_list **list) {
 	if (*list == NULL) {
 		*list = todo_load_list();
