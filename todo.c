@@ -86,6 +86,43 @@ void todo_update_value(struct todo_list **list, int index, char *value) {
 	return;
 }
 
+void todo_delete_value(struct todo_list **list, int index) {
+	char **new_content = NULL;
+
+	if (*list == NULL) {
+		*list = todo_load_list();
+
+		if (*list == NULL) {
+			fprintf(stderr, "todo: Failed to load list\n");
+			return;
+		}
+	}
+
+	if (index < 0 || index > (*list)->length - 1) {
+		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
+		return;
+	}
+
+	new_content = malloc(sizeof(char *) * ((*list)->length - 1));
+	if (new_content == NULL) {
+		// FIXME: Print error and set list to NULL so that main can exit
+		return;
+	}
+
+	for (int i = 0; i < index; i++) {
+		new_content[i] = (*list)->list[i];
+	}
+
+	for (int i = index + 1, j = index; i < (*list)->length; i++, j++) {
+		new_content[j] = (*list)->list[i];
+	}
+
+	// FIXME: Use todo_free_list()
+	(*list)->list = new_content;
+	(*list)->length--;
+	return;
+}
+
 void todo_print_list(struct todo_list *todo_list) {
 	if (todo_list == NULL) {
 		todo_list = todo_load_list();

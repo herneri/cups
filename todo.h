@@ -32,6 +32,9 @@ struct todo_list *todo_load_list(void);
 /* Change the text of a list item at the given index. */
 void todo_update_value(struct todo_list **list, int index, char *value);
 
+/* Delete a value at the given index. */
+void todo_delete_value(struct todo_list **list, int index);
+
 /* Print a loaded todo list. */
 void todo_print_list(struct todo_list *todo_list);
 
