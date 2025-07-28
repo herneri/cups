@@ -89,7 +89,46 @@ func delete_note(note_name string) bool {
 	return true
 }
 
+func find_argument_deficiency(arg_count int, i int, option string) {
+	if i + 1 > arg_count - 1 {
+		fmt.Fprintf(os.Stderr, "cn: Not enough arguments, %s requires a note name \n", option);
+		os.Exit(1)
+	}
+
+	return
+}
+
 func main() {
+	var arg_count int = len(os.Args)
+
 	check_dir_exists()
-	// TODO: Write CLI argument handling
+
+	for i := 1; i < arg_count; i++ {
+		if os.Args[i][0] == '-' {
+			switch os.Args[i][1] {
+			case 'l':
+				list_notes()
+				i++
+			case 'p':
+				find_argument_deficiency(arg_count, i, "-p")
+				print_note(os.Args[i + 1])
+				i++
+			case 'n':
+				find_argument_deficiency(arg_count, i, "-n")
+				write_note(os.Args[i + 1])
+				i++
+			case 'r':
+				find_argument_deficiency(arg_count, i, "-r")
+				delete_note(os.Args[i + 1])
+				i++
+			case 'h':
+				fmt.Println("usage: cn [OPTION] \n\n-l\t\tList all notes\n-p [NAME]\tPrint note",
+				"\n-n [NAME]\tCreate note\n-r [NAME]\tDelete note")
+			default:
+				fmt.Fprintf(os.Stderr, "cn: \"%c\" is an invalid argument \n", os.Args[i][1])
+			}
+		}
+	}
+
+	return
 }
