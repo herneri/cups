@@ -69,5 +69,24 @@ func api_word_fetch(word string) []Result {
 	return result
 }
 
+func display_definitions(payload []Result) {
+	for _, meaning := range payload[0].Meanings {
+		fmt.Println("______________________________\n")
+		fmt.Println(meaning.Part_speech)
+
+		for i := 0; i < len(meaning.Part_speech); i++ {
+			fmt.Print("-")
+		}
+
+		fmt.Println()
+
+		for _, definition := range meaning.Definitions {
+			fmt.Println("* " + definition.Definition + "\n")
+		}
+	}
+
+	return
+}
+
 func main() {
 }
