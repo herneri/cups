@@ -89,4 +89,14 @@ func display_definitions(payload []Result) {
 }
 
 func main() {
+	var arg_count int = len(os.Args)
+	var payload []Result
+
+	if arg_count < 2 {
+		fmt.Fprintf(os.Stderr, "dc: At least one argument must be entered\n")
+		os.Exit(1)
+	}
+
+	payload = api_word_fetch(os.Args[1])
+	display_definitions(payload)
 }
