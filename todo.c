@@ -198,3 +198,54 @@ void todo_print_list(struct todo_list *todo_list) {
 
 	return;
 }
+
+int main(int argc, char *argv[]) {
+	struct todo_list *list = NULL;
+
+	for (int i = 1; i < argc; i++) {
+		if (argv[i][0] != '-') {
+			continue;
+		}
+
+		switch (argv[i][1]) {
+		case 'p':
+			todo_print_list(list);
+			break;
+		case 'a':
+			if (argc <= i + 1) {
+				fprintf(stderr, "todo: A value is required for todo appending\n");
+				return 1;
+			}
+
+			todo_append_value(&list, argv[i + 1]);
+			todo_write_list(&list);
+			i++;
+			break;
+		case 'r':
+			if (argc <= i + 1) {
+				fprintf(stderr, "todo: An index is required for todo removal\n");
+				return 1;
+			}
+
+			todo_delete_value(&list, atoi(argv[i + 1]));
+			todo_write_list(&list);
+			i++;
+			break;
+		case 'e':
+			if (argc <= i + 2) {
+				fprintf(stderr, "todo: An index and value is required for todo editing\n");
+				return 1;
+			}
+
+			todo_update_value(&list, atoi(argv[i + 1]), argv[i + 2]);
+			todo_write_list(&list);
+			i += 2;
+			break;
+		default:
+			fprintf(stderr, "todo: Invalid option\n");
+			return 2;
+		}
+	}
+
+	return 0;
+}
