@@ -46,10 +46,9 @@ struct todo_list *todo_load_list(void) {
 	}
 
 	if (getline(&buffer, &buffer_size, entry_file) == -1) {
-		free(loaded_data->list);
-		free(loaded_data);
+		loaded_data->length = 0;
 		fclose(entry_file);
-		return NULL;
+		return loaded_data;
 	}
 
 	loaded_data->list[0] = strdup(buffer);
@@ -132,10 +131,13 @@ int todo_append_value(struct todo_list **list, char *value) {
 		return -1;
 	}
 
-	(*list)->list = realloc((*list)->list, sizeof(char *) * (*list)->length);
-	if ((*list)->list == NULL) {
-		fprintf(stderr, "todo: Failed to append to todo list\n");
-		return -1;
+	if ((*list)->length != 0) {
+		(*list)->list = realloc((*list)->list, sizeof(char *) * (*list)->length);
+
+		if ((*list)->list == NULL) {
+			fprintf(stderr, "todo: Failed to append to todo list\n");
+			return -1;
+		}
 	}
 
 	(*list)->list[(*list)->length] = strdup(value);
