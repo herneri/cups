@@ -29,6 +29,9 @@ struct todo_list *todo_load_list(void) {
 	char *buffer = NULL;
 	size_t buffer_size = 255;
 
+	int list_index = 0;
+	int newline_index = 0;
+
 	if (entry_file == NULL) {
 		return NULL;
 	}
@@ -51,14 +54,24 @@ struct todo_list *todo_load_list(void) {
 		return loaded_data;
 	}
 
-	loaded_data->list[0] = strdup(buffer);
+	loaded_data->list[list_index] = strdup(buffer);
+
+	newline_index = strnlen(buffer, buffer_size) - 1;
+
+	loaded_data->list[list_index][newline_index] = '\0';
 	loaded_data->length++;
 
 	while (getline(&buffer, &buffer_size, entry_file) != -1) {
 		// TODO: Fix memory leak for interactive mode in the event realloc returns NULL by freeing
 		// the previous list and its elements
+		list_index = loaded_data->length;
+		newline_index = strnlen(buffer, buffer_size) - 1;
+
 		loaded_data->list = realloc(loaded_data->list, (loaded_data->length + 1) * sizeof(char *));
-		loaded_data->list[loaded_data->length] = strdup(buffer);
+
+		loaded_data->list[list_index] = strdup(buffer);
+		loaded_data->list[list_index][newline_index] = '\0';
+
 		loaded_data->length++;
 	}
 
@@ -120,6 +133,7 @@ int todo_write_list(struct todo_list **list) {
 
 	for (int i = 0; i < (*list)->length; i++) {
 		fputs((*list)->list[i], todo_file);
+		fputs("\n", todo_file);
 	}
 
 	fclose(todo_file);
@@ -195,7 +209,7 @@ void todo_print_list(struct todo_list *todo_list) {
 	}
 
 	for (int i = 0; i < todo_list->length; i++) {
-		printf("%d: %s", i, todo_list->list[i]);
+		printf("%d: %s\n", i, todo_list->list[i]);
 	}
 
 	return;
