@@ -15,12 +15,19 @@
 	If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "todo.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* Todo list items are delimited by the newline character. */
+
+/* The elements in the list member must be freed. */
+struct todo_list {
+	char **list;
+	int length;
+};
+
+/* Reads a todo list from a text file into a heap-allocated array with realloc. */
 struct todo_list *todo_load_list(void) {
 	char path[255];
 	sprintf(path, "%s/.local/share/cups/todo.txt", getenv("HOME"));
@@ -80,6 +87,7 @@ struct todo_list *todo_load_list(void) {
 	return loaded_data;
 }
 
+/* Frees a todo_list and it's elements. */
 void todo_free_list(struct todo_list **list) {
 	if (*list == NULL) {
 		return;
@@ -95,6 +103,7 @@ void todo_free_list(struct todo_list **list) {
 	return;
 }
 
+/* See whether the list is loaded. If it isn't, then load it. */
 int todo_check_list(struct todo_list **list) {
 	if (*list == NULL) {
 		*list = todo_load_list();
@@ -108,6 +117,7 @@ int todo_check_list(struct todo_list **list) {
 	return 0;
 }
 
+/* Check whether the given index is within the list. */
 int todo_index_check(int list_length, int index) {
 	if (index < 0 || index > list_length - 1) {
 		fprintf(stderr, "todo: %d is out of bounds for this todo list\n", index);
@@ -117,6 +127,7 @@ int todo_index_check(int list_length, int index) {
 	return 0;
 }
 
+/* Output list contents to the todo list file. */
 int todo_write_list(struct todo_list **list) {
 	FILE *todo_file = NULL;
 	char path[255];
@@ -140,6 +151,7 @@ int todo_write_list(struct todo_list **list) {
 	return 0;
 }
 
+/* Append a new value to the todo list. */
 int todo_append_value(struct todo_list **list, char *value) {
 	if (todo_check_list(list) == -1) {
 		return -1;
@@ -159,6 +171,7 @@ int todo_append_value(struct todo_list **list, char *value) {
 	return 0;
 }
 
+/* Change the text of a list item at the given index. */
 void todo_update_value(struct todo_list **list, int index, char *value) {
 	if (todo_check_list(list) == -1) {
 		return;
@@ -172,6 +185,7 @@ void todo_update_value(struct todo_list **list, int index, char *value) {
 	return;
 }
 
+/* Delete a value at the given index. */
 void todo_delete_value(struct todo_list **list, int index) {
 	char **new_content = NULL;
 
@@ -203,6 +217,7 @@ void todo_delete_value(struct todo_list **list, int index) {
 	return;
 }
 
+/* Print a loaded todo list. */
 void todo_print_list(struct todo_list *todo_list) {
 	if (todo_check_list(&todo_list) == -1) {
 		return;
