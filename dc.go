@@ -69,16 +69,21 @@ func api_word_fetch(word string) []Result {
 	return result
 }
 
+func display_part_of_speech(part_of_speech string) {
+	fmt.Println("______________________________\n")
+	fmt.Println(part_of_speech)
+
+	for i := 0; i < len(part_of_speech); i++ {
+		fmt.Print("-")
+	}
+
+	fmt.Println()
+	return
+}
+
 func display_definitions(payload []Result) {
 	for _, meaning := range payload[0].Meanings {
-		fmt.Println("______________________________\n")
-		fmt.Println(meaning.Part_speech)
-
-		for i := 0; i < len(meaning.Part_speech); i++ {
-			fmt.Print("-")
-		}
-
-		fmt.Println()
+		display_part_of_speech(meaning.Part_speech)
 
 		for _, definition := range meaning.Definitions {
 			fmt.Println("* " + definition.Definition + "\n")
@@ -90,14 +95,7 @@ func display_definitions(payload []Result) {
 
 func display_synonyms(payload []Result) {
 	for _, meaning := range payload[0].Meanings {
-		fmt.Println("______________________________\n")
-		fmt.Println(meaning.Part_speech)
-
-		for i := 0; i < len(meaning.Part_speech); i++ {
-			fmt.Print("-")
-		}
-
-		fmt.Println()
+		display_part_of_speech(meaning.Part_speech)
 
 		if len(meaning.Synonyms) == 0 {
 			fmt.Println("\tNONE FOUND");
