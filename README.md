@@ -15,6 +15,7 @@ Refrain from using cups with sensitive data.
 * wq: A priority queue of assignments
 * sch: Weekly schedule of events
 * cn: Note manager
+* dc: Get definitions, synonyms, and antonyms for words using a web API
 
 ## Utility Usage
 
