@@ -111,6 +111,24 @@ func display_synonyms(payload []Result) {
 	return
 }
 
+func display_antonyms(payload []Result) {
+	for _, meaning := range payload[0].Meanings {
+		display_part_of_speech(meaning.Part_speech)
+
+		if len(meaning.Antonyms) == 0 {
+			fmt.Println("\tNONE FOUND");
+			continue
+		}
+
+		for _, antonym := range meaning.Antonyms {
+			fmt.Println("* " + antonym + "\n")
+		}
+	}
+
+	fmt.Println("______________________________\n")
+	return
+}
+
 func main() {
 	var arg_count int = len(os.Args)
 	var payload []Result
@@ -124,7 +142,11 @@ func main() {
 
 	if arg_count == 2 {
 		display_definitions(payload)
-	} else if arg_count == 3 && os.Args[2] == "-s" {
-		display_synonyms(payload)
+	} else if arg_count == 3 {
+		if os.Args[2] == "-s" {
+			display_synonyms(payload)
+		} else if os.Args[2] == "-a" {
+			display_antonyms(payload)
+		}
 	}
 }
