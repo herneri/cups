@@ -29,13 +29,13 @@ const API_ENDPOINT string = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 type Definition struct {
 	Definition string `json:"definition"`
-	Synonyms []string `json:"synonyms"`
-	Antonyms []string `json:"antonyms"`
 }
 
 type Entry struct {
 	Part_speech string `json:"partOfSpeech"`
 	Definitions []Definition `json:"definitions"`
+	Synonyms []string `json:"synonyms"`
+	Antonyms []string `json:"antonyms"`
 }
 
 type Result struct {
@@ -88,6 +88,31 @@ func display_definitions(payload []Result) {
 	return
 }
 
+func display_synonyms(payload []Result) {
+	for _, meaning := range payload[0].Meanings {
+		fmt.Println("______________________________\n")
+		fmt.Println(meaning.Part_speech)
+
+		for i := 0; i < len(meaning.Part_speech); i++ {
+			fmt.Print("-")
+		}
+
+		fmt.Println()
+
+		if len(meaning.Synonyms) == 0 {
+			fmt.Println("\tNONE FOUND");
+			continue
+		}
+
+		for _, synonym := range meaning.Synonyms {
+			fmt.Println("* " + synonym + "\n")
+		}
+	}
+
+	fmt.Println("______________________________\n")
+	return
+}
+
 func main() {
 	var arg_count int = len(os.Args)
 	var payload []Result
@@ -98,5 +123,10 @@ func main() {
 	}
 
 	payload = api_word_fetch(os.Args[1])
-	display_definitions(payload)
+
+	if arg_count == 2 {
+		display_definitions(payload)
+	} else if arg_count == 3 && os.Args[2] == "-s" {
+		display_synonyms(payload)
+	}
 }
