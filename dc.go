@@ -26,6 +26,7 @@ import (
 )
 
 const API_ENDPOINT string = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+const ENTRY_SEPERATOR string = "______________________________\n";
 
 type Definition struct {
 	Definition string `json:"definition"`
@@ -70,7 +71,7 @@ func api_word_fetch(word string) []Result {
 }
 
 func display_part_of_speech(part_of_speech string) {
-	fmt.Println("______________________________\n")
+	fmt.Println(ENTRY_SEPERATOR)
 	fmt.Println(part_of_speech)
 
 	for i := 0; i < len(part_of_speech); i++ {
@@ -90,6 +91,7 @@ func display_definitions(payload []Result) {
 		}
 	}
 
+	fmt.Println(ENTRY_SEPERATOR)
 	return
 }
 
@@ -107,7 +109,7 @@ func display_synonyms(payload []Result) {
 		}
 	}
 
-	fmt.Println("______________________________\n")
+	fmt.Println(ENTRY_SEPERATOR)
 	return
 }
 
@@ -125,7 +127,7 @@ func display_antonyms(payload []Result) {
 		}
 	}
 
-	fmt.Println("______________________________\n")
+	fmt.Println(ENTRY_SEPERATOR)
 	return
 }
 
