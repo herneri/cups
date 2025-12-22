@@ -20,6 +20,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"bufio"
 )
 
 var CN_DIR string = os.Getenv("HOME") + "/.local/share/cups/cn/"
@@ -64,16 +65,18 @@ func print_note(note_name string) bool {
 
 func write_note(note_name string) {
 	var text string
+	var stdin *bufio.Reader = bufio.NewReader(os.Stdin)
+
 	note_file, err := os.OpenFile(CN_DIR + note_name, os.O_APPEND | os.O_CREATE | os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "cn: Failed to open file for note writing\n")
 		return
 	}
 
-	fmt.Scan(&text)
-	for text != ">X" {
-		note_file.WriteString(text + "\n")
-		fmt.Scan(&text)
+	text, _ = stdin.ReadString('\n')
+	for text != ">X\n" {
+		note_file.WriteString(text)
+		text, _ = stdin.ReadString('\n')
 	}
 
 	return
