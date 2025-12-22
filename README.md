@@ -26,7 +26,16 @@ installed on your system during installation.
 Where `<UTILITY_NAME>` is the name of the utility you want to
 read about.
 
-## Installation
+## Build/Installation
 
-Run the following command (make is required):
+### To compile a utility:
+
+`make <UTILITY_NAME>`
+
+### To compile the entire suite:
+
+`make`
+
+### Run this command as the root user to install the entire suite:
+
 `make install`
